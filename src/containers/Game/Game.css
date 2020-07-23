@@ -1,0 +1,27 @@
+.snake{
+    background-color: #007f00;
+}
+
+.food{
+    color: #007f00;
+}
+
+.snake-head-left{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.snake-head-up{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.snake-head-right{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.snake-head-down{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
