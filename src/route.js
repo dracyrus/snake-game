@@ -1,13 +1,13 @@
 import React from "react";
 import {Route, Switch, Redirect} from 'react-router-dom';
 
-import Inicio from './containers/Inicio/Inicio';
+import Game from './containers/Game/Game';
 
 const route = (
         <Switch>
             <Route path= "/"
                    exact
-                   component={Inicio}/>
+                   component={Game}/>
             <Redirect to="/"/>
         </Switch>
     );

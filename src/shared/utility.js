@@ -29,24 +29,26 @@ export const usePrevious = value => {
 
 /**
  *
- * @param formInputs
- * @returns {[]}
+ * @param callback
+ * @param delay
  */
-export const getFormElementsArray = formInputs => {
-    const formElementsArray = [];
+export const useInterval = (callback, delay) => {
+    const savedCallback = useRef();
 
-    for (let key in formInputs) {
-        formElementsArray.push({
-            id: key,
-            config: formInputs[key]
-        });
-    }
+    useEffect(() => {
+        savedCallback.current = callback;
 
-    return formElementsArray;
-};
+    }, [callback]);
 
-
-
-
+    useEffect(() => {
+        function tick() {
+            savedCallback.current();
+        }
+        if (delay !== null) {
+            let id = setInterval(tick, delay);
+            return () => clearInterval(id);
+        }
+    }, [delay]);
+}
 
 

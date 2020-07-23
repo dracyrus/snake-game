@@ -1,14 +1,14 @@
 import React from "react";
 
-import './BoardGameOver.css';
-import Auxiliary from "../../../hoc/Auxiliary/Auxiliary";
+import '../Board.css';
 
-const boardGameStart = () => {
+const boardGameStart = (props) => {
     return (
-        <Auxiliary>
-            <div className="boardGameOver text-center" />
-            <h3 className='gameOverText text-center'>Game Over</h3>
-        </Auxiliary>
+        <div onClick={props.handleStartGame}>
+            <div className="boardGame text-center" />
+            <h3 className='boardGameText text-center'>Welcome to the Snake Game</h3>
+            <p className='boardGameTextInstruction text-center'>(Click inside to start)</p>
+        </div>
     );
 }
 

@@ -1,24 +1,26 @@
 import React from "react";
-import {Navbar} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faDrumstickBite} from "@fortawesome/free-solid-svg-icons";
+import {faAppleAlt} from "@fortawesome/free-solid-svg-icons";
+import Score from "../Score/Score";
+
+import './Board.css';
 
 const board = props => {
     return (
         <div className="board">
+            <Score score={props.score}/>
             {props.boardSquare.map((element, index) => {
-                let color;
-                let food = null;
-                let snakeHead = null;
+                let color, snakeHead = null;
 
                 if (element.isSnake) {
                     color = 'snake';
                     snakeHead = 'snake-head-' + props.direction;
-                } else if (element.row % 2) color = (index % 2) ? 'even' : 'odd';
+                }
+                else if (element.isTail) color = 'snake';
+                else if (element.row % 2) color = (index % 2) ? 'even' : 'odd';
                 else if (!(element.row % 2)) color = (index % 2) ? 'odd' : 'even';
 
-                if (element.row === board.foodPosition.row && element.column === board.foodPosition.column)
-                    food = <FontAwesomeIcon icon={faDrumstickBite} className='food'/>;
+                const food = (element.isFood) ? <FontAwesomeIcon icon={faAppleAlt} className='food'/> : null;
 
                 let classes = [color, snakeHead];
 

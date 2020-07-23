@@ -1,0 +1,11 @@
+.score-container{
+    position: absolute;
+    width: 780px !important;
+    top: 1%;
+}
+
+.score-container h4{
+    position: absolute;
+    color: #007f00;
+    right: 1%;
+}
