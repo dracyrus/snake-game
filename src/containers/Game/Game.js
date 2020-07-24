@@ -204,7 +204,7 @@ const Game = () => {
         const newPositionsSnakeTail = getNewPositionsSnakeTail(snake.head);
         const updatedElementHead = updateObject(snake.head, newPositionSnake);
 
-        const isDead = validIsDead(newPositionSnake);
+        const isDead = validIsDead(newPositionSnake, newPositionsSnakeTail);
 
         const newSnake = {
             head: updatedElementHead,
@@ -284,13 +284,22 @@ const Game = () => {
      */
     const validEatFood = () => board.foodPosition && (snake.head.row === board.foodPosition.row && snake.head.column === board.foodPosition.column);
 
-
     /**
-     * Function that valid if the snake is alive
+     *
      * @param newPosition
-     * @returns {boolean|*|number}
+     * @param newPositionsSnakeTail
+     * @returns {boolean}
      */
-    const validIsDead = (newPosition) => newPosition.row >= board.numberRow || newPosition.column >= board.numberColumn || newPosition.row < 0 || newPosition.column < 0
+    const validIsDead = (newPosition, newPositionsSnakeTail) => {
+        if(
+            newPosition.row >= board.numberRow || newPosition.column >= board.numberColumn ||
+            newPosition.row < 0 || newPosition.column < 0 ||
+            newPositionsSnakeTail.find(tail => tail.row === newPosition.row && tail.column === newPosition.column)
+        )
+            return true;
+
+        return false;
+    }
 
     /**
      * Function that update snake state
