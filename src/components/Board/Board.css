@@ -1,9 +1,7 @@
 /*************************************** BOARD STYLE ****************************************/
 .boardGame,
-.boardGameText,
+.boardGameMessage,
 .boardGameTextInstruction{
-    width: 780px;
-    height: 780px;
     position: absolute;
     top: 0;
     left: 0;
@@ -17,7 +15,7 @@
     background-color:rgba(0, 0, 0, 0.7);
 }
 
-.boardGameText{
+.boardGameMessage{
     color: #FFF;
     top: 40%;
 }
@@ -30,14 +28,27 @@
 }
 
 .board{
-    width: 780px;
-    height: 780px;
     margin: 0 auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     padding: 0 !important;
     outline: solid 10px #007f00;
+}
+
+.board26{
+    width: 780px !important;
+    height: 780px;
+}
+
+.board22{
+    width: 660px !important;
+    height: 660px;
+}
+
+.board18{
+    width: 540px !important;
+    height: 540px;
 }
 
 .board div{

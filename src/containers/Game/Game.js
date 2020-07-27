@@ -6,8 +6,7 @@ import {connect} from "react-redux";
 import {updateObject, useInterval, updateBoard, udpateSnakePosition} from "../../helpers/";
 
 import Board from "../../components/Board/Board";
-import BoardGameOver from "../../components/Board/BoardGameOver/BoardGameOver";
-import BoardGameStart from "../../components/Board/BoardGameStart/BoardGameStart";
+import BoardMessage from "../../components/Board/BoardMessage/BoardMessage";
 
 import './Game.css';
 
@@ -76,7 +75,7 @@ const Game = props => {
     /**
      * Function reload the game
      */
-    const restartGame = () => {
+    const handleRestartGame = () => {
         updateStateElements(initialSnake, 'snake');
         updateStateElements(initialGame, 'game');
         updateStateElements(initialBoard, 'board');
@@ -135,20 +134,15 @@ const Game = props => {
         updateStateElements({head: updatedElement}, 'snake');
     }
 
-
-    let boardBox = null;
-
-    if(!game.isStarted) boardBox = <BoardGameStart handleStartGame={handleStartGame}/>;
-    else if(snake.isDead) boardBox = <BoardGameOver handleRestartGame={restartGame}/>;
-
     return (
         <Row className='p-5 m-0 w-100'>
             <Col lg={12} className="text-center">
-                {boardBox}
                 <Board
                     boardSquare={board.boardSquare}
-                    direction={snake.head.direction}
-                    score={game.score}/>
+                    snake={snake}
+                    game={game}
+                    handleStartGame={handleStartGame}
+                    handleRestartGame={handleRestartGame}/>
             </Col>
         </Row>
     );
@@ -162,4 +156,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(Game);
-

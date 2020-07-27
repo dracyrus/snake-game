@@ -4,35 +4,56 @@ import {Col, Row} from "react-bootstrap";
 import {connect} from "react-redux";
 import * as actions from "../../store/actions";
 
-import {updateObject} from "../../helpers/";
+import {updateObject, getSTyleTemplate, getVelocity, getBoardSize} from "../../helpers/";
 import Form from "../../components/UI/Form/Form";
 
 import './Configuration.css';
 
 const Configuration = props => {
-    const {colorTemplate} = props;
+    const {styleTemplate} = props;
 
-    const levelVelocities = [
-        { value: 'Easy', displayValue: 'Easy' },
-        { value: 'Medium', displayValue: 'Medium' },
-        { value: 'Hard', displayValue: 'Hard' },
+    const sizes = [
+        { value: '26', displayValue: '26x26' },
+        { value: '22', displayValue: '22x22' },
+        { value: '18', displayValue: '18x18' },
     ];
-
     const colors = [
         { value: 'green', displayValue: 'green' },
         { value: 'blue', displayValue: 'blue' },
         { value: 'purple', displayValue: 'purple' },
         { value: 'pink', displayValue: 'pink' },
     ];
+    const levelVelocities = [
+        { value: 'Easy', displayValue: 'Easy' },
+        { value: 'Medium', displayValue: 'Medium' },
+        { value: 'Hard', displayValue: 'Hard' },
+    ];
 
     const [configurationForm, setConfigurationForm] = useState({
+        boardSize: {
+            elementType: 'radio',
+            elementConfig: {
+                options: sizes,
+                name: 'boardSize'
+            },
+            value: '26',
+            validation: {
+                required: true
+            },
+            valid: true,
+            touched: false,
+            keypress: null,
+            pasted: null,
+            label: 'Board Size',
+            error: 'Define a Board Size'
+        },
         colorTemplate: {
             elementType: 'radio',
             elementConfig: {
                 options: colors,
                 name: 'colorSnake'
             },
-            value: colorTemplate.color.replace('color-', ''),
+            value: styleTemplate.color.replace('color-', ''),
             validation: {
                 required: true
             },
@@ -62,9 +83,9 @@ const Configuration = props => {
         },
     });
 
-    const configurationStyle = ['configuration', colorTemplate.board[1]]
-    const styleTitle = ['mt-5', 'mb-5', colorTemplate.color]
-    const classBtn = ['btn', 'mb-2', colorTemplate.backgroundColor];
+    const configurationStyle = ['configuration', styleTemplate.board[2]]
+    const styleTitle = ['mt-5', 'mb-5', styleTemplate.color]
+    const classBtn = ['btn', 'mb-2', styleTemplate.backgroundColor];
 
     /**
      * Funcion que captura evento de cambio de valor de los Inputs
@@ -101,68 +122,13 @@ const Configuration = props => {
     const formSubmitHandler = event => {
         event.preventDefault();
 
-        const board = ['board'];
-        let backgroundColor, color, squareOdd, squareEven, velocity;
+        const boardSize = getBoardSize(configurationForm.boardSize.value);
+        const styleTemplate = getSTyleTemplate(configurationForm.colorTemplate.value, configurationForm.boardSize.value);
+        const velocity = getVelocity(configurationForm.levelVelocity.value);
 
-        switch (configurationForm.colorTemplate.value) {
-            case 'blue':
-                board.push('board-blue');
-                backgroundColor = 'background-blue';
-                color = 'color-blue';
-                squareOdd = 'odd-blue';
-                squareEven = 'even-blue';
-                break;
-            case 'purple':
-                board.push('board-purple');
-                backgroundColor = 'background-purple';
-                color = 'color-purple';
-                squareOdd = 'odd-purple';
-                squareEven = 'even-purple';
-                break;
-            case 'pink':
-                board.push('board-pink');
-                backgroundColor = 'background-pink';
-                color = 'color-pink';
-                squareOdd = 'odd-pink';
-                squareEven = 'even-pink';
-                break;
-            case 'green':
-            default:
-                board.push('board-green');
-                backgroundColor = 'background-green';
-                color = 'color-green';
-                squareOdd = 'odd-green';
-                squareEven = 'even-green';
-                break;
-        }
+        console.log(boardSize);
 
-        switch (configurationForm.levelVelocity.value) {
-            case 'Medium':
-                velocity = 200;
-                break;
-            case 'Hard':
-                velocity = 50;
-                break;
-            case 'Easy':
-            default:
-                velocity = 350;
-                break;
-        }
-
-        const colorTemplae = {
-            board,
-            backgroundColor,
-            color,
-            squareOdd,
-            squareEven,
-        };
-
-        const boardSize = {
-            numberRow: 26,
-            numberColumn: 26,
-        };
-
-        props.updateConfig(boardSize, colorTemplae, velocity);
+        props.updateConfig(boardSize, styleTemplate, velocity);
 
     };
 
@@ -188,7 +154,7 @@ const Configuration = props => {
 
 const mapStateToProps = state => {
     return {
-        colorTemplate: state.config.colorTemplate,
+        styleTemplate: state.config.styleTemplate,
     };
 };
 
@@ -199,7 +165,7 @@ const mapStateToProps = state => {
  */
 const mapDispatchToProps = dispatch => {
     return {
-        updateConfig: (boardSize, colorTemplate, velocity) => dispatch(actions.updateConfig(boardSize, colorTemplate, velocity)),
+        updateConfig: (boardSize, styleTemplate, velocity) => dispatch(actions.updateConfig(boardSize, styleTemplate, velocity)),
     };
 };
 

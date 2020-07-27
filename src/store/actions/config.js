@@ -7,11 +7,11 @@ import * as actionTypes from './actionTypes';
  * @param velocity
  * @returns {{levelVelocity: *, boardSize: *, type: string, colorSnake: *}}
  */
-export const updateConfig = (boardSize, colorTemplate, velocity) => {
+export const updateConfig = (boardSize, styleTemplate, velocity) => {
     return {
         type: actionTypes.UPDATE_CONFIG,
         boardSize: boardSize,
-        colorTemplate: colorTemplate,
+        styleTemplate: styleTemplate,
         levelVelocity: velocity,
     };
 };

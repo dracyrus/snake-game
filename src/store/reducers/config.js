@@ -6,8 +6,8 @@ const initialState = {
         numberRow: 26,
         numberColumn: 26,
     },
-    colorTemplate: {
-        board: ['board','board-green'],
+    styleTemplate: {
+        board: ['board','board26', 'board-green'],
         backgroundColor: 'background-green',
         color : 'color-green',
         squareOdd : 'odd-green',
@@ -24,7 +24,7 @@ const initialState = {
 const updateConfig = (state, action) => {
     return updateObject( state, {
         boardSize:action.boardSize,
-        colorTemplate: action.colorTemplate,
+        styleTemplate: action.styleTemplate,
         levelVelocity: action.levelVelocity,
         loading: false,
         error: null

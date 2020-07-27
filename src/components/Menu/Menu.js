@@ -9,7 +9,7 @@ import './Menu.css';
 
 const Menu = props => {
     let location = useLocation();
-    const {colorTemplate} = props;
+    const {styleTemplate} = props;
 
     let menuIcon = <FontAwesomeIcon icon={faCog}/>;
     let menuUrl  = '/configuration';
@@ -23,7 +23,7 @@ const Menu = props => {
         <Navbar>
             <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
-                    <Link to={menuUrl} className={colorTemplate.color}>{menuIcon}</Link>
+                    <Link to={menuUrl} className={styleTemplate.color}>{menuIcon}</Link>
                 </Navbar.Text>
             </Navbar.Collapse>
         </Navbar>
@@ -32,7 +32,7 @@ const Menu = props => {
 
 const mapStateToProps = state => {
     return {
-        colorTemplate: state.config.colorTemplate,
+        styleTemplate: state.config.styleTemplate,
     };
 };
 

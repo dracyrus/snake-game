@@ -14,5 +14,11 @@ export {
 } from './snake';
 
 export {
+    getSTyleTemplate,
+    getVelocity,
+    getBoardSize
+} from './config';
+
+export {
     getFormElementsArray
 } from './form';
