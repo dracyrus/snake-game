@@ -14,21 +14,6 @@ export const updateObject = (oldObject, updatedProperties) => {
 
 /**
  *
- * @param value
- * @returns {undefined}
- */
-export const usePrevious = value => {
-    const ref = useRef();
-
-    useEffect(() => {
-        ref.current = value;
-    });
-
-    return ref.current;
-};
-
-/**
- *
  * @param callback
  * @param delay
  */
@@ -50,5 +35,4 @@ export const useInterval = (callback, delay) => {
         }
     }, [delay]);
 }
-
 

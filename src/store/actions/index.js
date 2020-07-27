@@ -1,0 +1,3 @@
+export {
+    updateConfig
+} from './config';

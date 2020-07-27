@@ -1,0 +1,12 @@
+.configuration{
+    width: 780px;
+    height: 780px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+
+}

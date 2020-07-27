@@ -7,7 +7,7 @@ import './Score.css';
 const score = props => {
     return (
         <div className="score-container">
-            <h4>{props.score} <FontAwesomeIcon icon={faAppleAlt}/></h4>
+            <h4 className={props.foodColor}>{props.score} <FontAwesomeIcon icon={faAppleAlt}/></h4>
         </div>
     );
 }

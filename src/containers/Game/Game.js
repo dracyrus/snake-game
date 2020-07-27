@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Col, Row} from "react-bootstrap";
 
-import {updateObject, useInterval} from "../../shared/utility";
+import {connect} from "react-redux";
+
+import {updateObject, useInterval, updateBoard, udpateSnakePosition} from "../../helpers/";
 
 import Board from "../../components/Board/Board";
 import BoardGameOver from "../../components/Board/BoardGameOver/BoardGameOver";
@@ -9,19 +11,17 @@ import BoardGameStart from "../../components/Board/BoardGameStart/BoardGameStart
 
 import './Game.css';
 
-const Game = () => {
+const Game = props => {
+    const {boardSize, levelVelocity} = props;
     /*************** STATE DECLARATION ***************/
     const [board, setBoard] = useState({
-        numberRow: 26,
-        numberColumn: 26,
         boardSquare: [],
-        velocity: 300,
         foodPosition: null,
     });
     const [snake, setSnake] = useState({
         head: {
-            row: parseInt(board.numberRow / 2),
-            column: parseInt(board.numberColumn / 2),
+            row: parseInt(boardSize.numberRow / 2),
+            column: parseInt(boardSize.numberColumn / 2),
             direction: 'right'
         },
         tails: [],
@@ -36,22 +36,22 @@ const Game = () => {
      * Function update the Board
      */
     useEffect(() => {
-        updateBoard();
+        updateBoard(boardSize, board, snake, game.score, updateStateElements);
     }, []);
 
     /**
      * Function that execute every specific time until snake is dead
      */
     useInterval(() => {
-        udpateSnakePosition();
-    }, game.isStarted && !snake.isDead ? board.velocity : null);
+        udpateSnakePosition(snake, boardSize, game.score, updateStateElements);
+    }, game.isStarted && !snake.isDead ? levelVelocity : null);
 
     /**
      * Function update Snake when the Position changes
      */
     useEffect(() => {
         if (!snake.isDead) {
-            updateBoard();
+            updateBoard(boardSize, board, snake, game.score, updateStateElements);
             document.body.addEventListener('keydown', udpateSnakeDirection);
         }
 
@@ -71,110 +71,40 @@ const Game = () => {
     /**
      * Function reload the game
      */
-    const restartGame = () => {
-        window.location.reload(false);
-    }
-
-    /**
-     * Function that update the board with the snake and food position
-     */
-    const updateBoard = () => {
-        const boardSquards = [];
-
-        const isEatFood = validEatFood();
-
-        let score = game.score;
-        if(isEatFood){
-            score  += 10;
-            addTailSnake();
-        }
-
-        const foodPosition   = (!board.foodPosition || isEatFood) ? updateFoodPosition() : board.foodPosition;
-        let row, column = 0;
-
-        for (row = 0; row < board.numberRow; row++) {
-            for (column = 0; column < board.numberColumn; column++) {
-
-                const isSnake = (snake.head.row === row && snake.head.column === column);
-                const isFood  = (foodPosition.row === row && foodPosition.column === column);
-                const isTail  = (snake.tails.find(tail => tail.row === row && tail.column === column));
-
-                boardSquards.push({
-                    row,
-                    column,
-                    isSnake,
-                    isFood,
-                    isTail
-                })
-            }
-        }
-
-        updateBoardState(boardSquards, foodPosition);
-        updateScore(score);
-    }
+    const restartGame = () => window.location.reload(false);
 
     /**
      *
-     * @param boardSquards
-     * @param foodPosition
+     * @param updateElement
+     * @param type
      */
-    const updateBoardState = (boardSquards, foodPosition) => {
-        const updatedBoard = updateObject(board, {
-            boardSquare: boardSquards,
-            foodPosition: foodPosition,
-        });
+    const updateStateElements = (updateElement ,type) => {
+        let updatedElements;
 
-        setBoard(updatedBoard);
-    }
-
-    /**
-     *
-     * @param score
-     */
-    const updateScore = score => {
-        const updatedGame = updateObject(game, {
-            score: score
-        });
-
-        setGame(updatedGame);
-    }
-
-    /**
-     * Function that update food position
-     * @returns {{column: number, row: number}}
-     */
-    const updateFoodPosition = () => {
-        return {
-            row: Math.floor(Math.random() * (board.numberRow - 1)) + 1,
-            column: Math.floor(Math.random() * (board.numberColumn - 1)) + 1,
-        };
-    }
-
-    /**
-     *
-     */
-    const addTailSnake = () => {
-        const tails = [...snake.tails];
-
-        let lastPositionTail = (tails.length > 0) ? tails[tails.length-1] : snake.head;
-
-        const newPositionTail = getNewPositionSnakeTail(lastPositionTail);
-        tails.push(newPositionTail);
-        const newSnake = {
-            tails,
+        switch (type) {
+            case 'board':
+                updatedElements = updateObject(board, updateElement);
+                setBoard(updatedElements);
+                break;
+            case 'game':
+                updatedElements = updateObject(game, updateElement);
+                setGame(updatedElements);
+                break;
+            case 'snake':
+                updatedElements = updateObject(snake, updateElement);
+                setSnake(updatedElements);
+                break;
         }
-
-        updateSnake(newSnake);
     }
 
     /**
      * Function that update snake direction
      * @param e
      */
-    const udpateSnakeDirection = e => {
+    const udpateSnakeDirection = event => {
         let direction;
 
-        switch (e.keyCode) {
+        switch (event.keyCode) {
             case 37:
                 direction = 'left';
                 break;
@@ -188,127 +118,14 @@ const Game = () => {
                 direction = 'down';
                 break;
             default:
-                e.preventDefault();
+                event.preventDefault();
                 return;
         }
 
         const updatedElement = updateObject(snake.head, {direction: direction});
-        updateSnake({head: updatedElement});
+        updateStateElements({head: updatedElement}, 'snake');
     }
 
-    /**
-     *
-     */
-    const udpateSnakePosition = () => {
-        const newPositionSnake = getNewPositionSnake();
-        const newPositionsSnakeTail = getNewPositionsSnakeTail(snake.head);
-        const updatedElementHead = updateObject(snake.head, newPositionSnake);
-
-        const isDead = validIsDead(newPositionSnake, newPositionsSnakeTail);
-
-        const newSnake = {
-            head: updatedElementHead,
-            isDead: isDead,
-            tails: newPositionsSnakeTail,
-        }
-
-        updateSnake(newSnake);
-    }
-
-    /**
-     *
-     * @returns {{column: number, row: number}}
-     */
-    const getNewPositionSnake = () => {
-        const {direction, row, column} = snake.head;
-
-        switch (direction) {
-            case 'up':
-                return {row: row - 1, column: column}
-            case 'down':
-                return {row: row + 1, column: column}
-            case 'left':
-                return {row: row, column: column - 1}
-            case 'right':
-            default:
-                return {row: row, column: column + 1}
-        }
-    }
-
-    /**
-     *
-     * @returns {{column: number, row: number}}
-     */
-    const getNewPositionSnakeTail = tail => {
-        switch (snake.head.direction) {
-            case 'up':
-                return {row: tail.row - 1, column: tail.column}
-            case 'down':
-                return {row: tail.row + 1, column: tail.column}
-            case 'left':
-                return {row: tail.row, column: tail.column - 1}
-            case 'right':
-            default:
-                return {row: tail.row, column: tail.column + 1}
-        }
-    }
-
-    /**
-     *
-     * @returns {[]}
-     */
-    const getNewPositionsSnakeTail = positionSnake => {
-        const {tails} = snake;
-        const {score} = game;
-        let tailNewPosition = [];
-        let newPositionTail, tailElementPosition = null;
-
-        if(snake.tails.length > 0){
-            tails.map((element, index) => {
-                newPositionTail = (index === 0) ? positionSnake : tailElementPosition
-                tailNewPosition.push(newPositionTail);
-                tailElementPosition = element;
-            });
-
-            if((score/10) !== tails.length) tailNewPosition.push(tailElementPosition);
-        }else if(score !== 0){
-            tailNewPosition.push(positionSnake);
-        }
-
-        return tailNewPosition;
-    }
-
-    /**
-     *
-     * @returns {boolean|boolean}
-     */
-    const validEatFood = () => board.foodPosition && (snake.head.row === board.foodPosition.row && snake.head.column === board.foodPosition.column);
-
-    /**
-     *
-     * @param newPosition
-     * @param newPositionsSnakeTail
-     * @returns {boolean}
-     */
-    const validIsDead = (newPosition, newPositionsSnakeTail) => {
-        if(
-            newPosition.row >= board.numberRow || newPosition.column >= board.numberColumn ||
-            newPosition.row < 0 || newPosition.column < 0 ||
-            newPositionsSnakeTail.find(tail => tail.row === newPosition.row && tail.column === newPosition.column)
-        )
-            return true;
-
-        return false;
-    }
-
-    /**
-     * Function that update snake state
-     * @param updateElement
-     */
-    const updateSnake = updateElement => {
-        const updatedSnake = updateObject(snake, updateElement);
-        setSnake(updatedSnake);
-    }
 
     let boardBox = null;
 
@@ -323,11 +140,17 @@ const Game = () => {
                     boardSquare={board.boardSquare}
                     direction={snake.head.direction}
                     score={game.score}/>
-
             </Col>
         </Row>
     );
 };
 
-export default Game;
+const mapStateToProps = state => {
+    return {
+        boardSize: state.config.boardSize,
+        levelVelocity: state.config.levelVelocity,
+    };
+};
+
+export default connect(mapStateToProps)(Game);
 

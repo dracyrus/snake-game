@@ -1,11 +1,55 @@
 body{
   font-family: 'gameover';
-  overflow-y: hidden;
-}
-.background-color-principal{
-  background-color: #007f00;
 }
 
 .w-15{
   width: 15%;
+}
+
+.board-green{
+  outline: solid 10px #007f00;
+}
+
+.board-blue{
+  outline: solid 10px #0066CC;
+}
+
+.board-purple{
+  outline: solid 10px #A020F0;
+}
+
+.board-pink{
+  outline: solid 10px #FC3468;
+}
+
+.background-green{
+  background-color: #007f00;
+}
+
+.background-blue{
+  background-color: #0066CC;
+}
+
+.background-purple{
+  background-color: #A020F0;
+}
+
+.background-pink{
+  background-color: #FC3468;
+}
+
+.color-green{
+  color: #007f00 !important;
+}
+
+.color-blue{
+  color: #0066CC !important;
+}
+
+.color-purple{
+  color: #A020F0 !important;
+}
+
+.color-pink{
+  color: #FC3468 !important;
 }
