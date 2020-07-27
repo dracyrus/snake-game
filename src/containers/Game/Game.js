@@ -13,12 +13,11 @@ import './Game.css';
 
 const Game = props => {
     const {boardSize, levelVelocity} = props;
-    /*************** STATE DECLARATION ***************/
-    const [board, setBoard] = useState({
+    const initialBoard = {
         boardSquare: [],
         foodPosition: null,
-    });
-    const [snake, setSnake] = useState({
+    }
+    const initialSnake = {
         head: {
             row: parseInt(boardSize.numberRow / 2),
             column: parseInt(boardSize.numberColumn / 2),
@@ -26,11 +25,15 @@ const Game = props => {
         },
         tails: [],
         isDead: false,
-    });
-    const [game, setGame] = useState({
+    };
+    const initialGame = {
         score: 0,
         isStarted: false,
-    });
+    }
+    /*************** STATE DECLARATION ***************/
+    const [board, setBoard] = useState(initialBoard);
+    const [snake, setSnake] = useState(initialSnake);
+    const [game, setGame] = useState(initialGame);
 
     /**
      * Function update the Board
@@ -62,16 +65,22 @@ const Game = props => {
      * Function start the game
      */
     const handleStartGame = () => {
-        setGame({
+        const updateElement = {
             score: 0,
             isStarted: true,
-        });
+        };
+
+        updateStateElements(updateElement, 'game');
     }
 
     /**
      * Function reload the game
      */
-    const restartGame = () => window.location.reload(false);
+    const restartGame = () => {
+        updateStateElements(initialSnake, 'snake');
+        updateStateElements(initialGame, 'game');
+        updateStateElements(initialBoard, 'board');
+    };
 
     /**
      *
