@@ -2,6 +2,7 @@ import React from "react";
 
 import '../Board.css';
 import {connect} from "react-redux";
+import {PropTypes} from "prop-types";
 
 const BoardMessage = props => {
     const {styleTemplate} = props;
@@ -24,5 +25,9 @@ const mapStateToProps = state => {
         styleTemplate: state.config.styleTemplate,
     };
 };
+
+BoardMessage.propTypes = {
+    handleEvent: PropTypes.func.isRequired,
+}
 
 export default connect(mapStateToProps)(BoardMessage);

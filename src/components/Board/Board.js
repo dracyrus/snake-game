@@ -3,6 +3,8 @@ import {connect} from "react-redux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAppleAlt} from "@fortawesome/free-solid-svg-icons";
 
+import {PropTypes} from 'prop-types';
+
 import Score from "../Score/Score";
 
 import './Board.css';
@@ -47,7 +49,6 @@ const Board = props => {
                 })}
             </div>
         </Auxiliary>
-
     );
 }
 
@@ -58,5 +59,28 @@ const mapStateToProps = state => {
         levelVelocity: state.config.levelVelocity,
     };
 };
+
+Board.propTypes = {
+    boardSquare: PropTypes.array.isRequired,
+    snake: PropTypes.shape({
+        head: PropTypes.shape({
+            row: PropTypes.number,
+            column: PropTypes.number,
+        }),
+        tails: PropTypes.arrayOf(
+            PropTypes.shape({
+                row: PropTypes.number,
+                column: PropTypes.number,
+            })
+        ),
+        isDead: PropTypes.bool.isRequired,
+    }).isRequired,
+    game: PropTypes.shape({
+        score: PropTypes.number.isRequired,
+        isStarted: PropTypes.bool.isRequired,
+    }).isRequired,
+    handleStartGame: PropTypes.func.isRequired,
+    handleRestartGame: PropTypes.func.isRequired,
+}
 
 export default connect(mapStateToProps)(Board);

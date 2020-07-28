@@ -1,6 +1,7 @@
 import React from 'react';
 
 import './Button.css';
+import {PropTypes} from "prop-types";
 
 const button = (props) => (
     <button
@@ -12,5 +13,12 @@ const button = (props) => (
         {props.children}
     </button>
 );
+
+button.propTypes = {
+    type: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    classBtn: PropTypes.arrayOf(PropTypes.string).isRequired,
+    disabled: PropTypes.bool.isRequired,
+}
 
 export default button;

@@ -9,6 +9,7 @@ import Input from '../Input/Input';
 import Button from "../Button/Button";
 
 import './Form.css';
+import {PropTypes} from "prop-types";
 
 const form = props => {
     const formElementsArray = getFormElementsArray(props.formData);
@@ -22,21 +23,10 @@ const form = props => {
                             <Col lg={props.column} className='form-group' key={formElement.id}>
                                 <Input
                                     key={formElement.id}
-                                    id={formElement.id}
-                                    elementType={formElement.config.elementType}
-                                    elementConfig={formElement.config.elementConfig}
-                                    value={formElement.config.value}
-                                    defaultValue={formElement.config.value}
-                                    invalid={!formElement.config.valid}
-                                    shouldValidate={formElement.config.validation}
-                                    touched={formElement.config.touched}
-                                    error={formElement.config.error}
-                                    label={formElement.config.label}
-                                    changed={event => props.handleInputChanged(event, formElement.id)}
-                                    keypress={formElement.config.keypress}
-                                    pasted={formElement.config.pasted}
+                                    inputConfig={formElement.config}
                                     columnLabel={props.columnLabel}
                                     columnInput={props.columnInput}
+                                    changed={event => props.handleInputChanged(event, formElement.id)}
                                 />
                             </Col>
                         )
@@ -57,6 +47,17 @@ const form = props => {
         </Auxiliary>
     );
 };
+
+form.propTypes = {
+    column: PropTypes.string.isRequired,
+    columnLabel: PropTypes.string.isRequired,
+    columnInput: PropTypes.string.isRequired,
+    formData: PropTypes.object.isRequired,
+    formIsValid: PropTypes.bool.isRequired,
+    handleInputChanged: PropTypes.func.isRequired,
+    handleFormSubmited: PropTypes.func.isRequired,
+    classBtn: PropTypes.arrayOf(PropTypes.string).isRequired,
+}
 
 export default form;
 

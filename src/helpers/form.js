@@ -1,5 +1,3 @@
-import {updateObject} from "./global";
-
 /**
  *
  * @param formInputs

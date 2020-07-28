@@ -1,42 +1,32 @@
 import React from 'react';
 
 import './Input.css';
+import {PropTypes} from "prop-types";
 
 const input = ( props ) => {
     let inputElement = null;
 
     let classError = ['invalid-feedback'];
-    if (props.invalid && props.touched) classError.push('showError');
+    if (props.inputConfig.invalid && props.inputConfig.touched) classError.push('showError');
 
-    switch ( props.elementType ) {
-        case ('input'):
-            inputElement = <input
-                {...props.elementConfig}
-                id={props.id}
-                className="form-control"
-                value={props.value}
-                onKeyPress={props.keypress}
-                onChange={props.changed}
-                onPaste={props.pasted}
-                autoComplete='off'/>;
-            break;
+    switch ( props.inputConfig.elementType ) {
         case ( 'textarea' ):
             inputElement = <textarea
-                {...props.elementConfig}
-                id={props.id}
+                {...props.inputConfig.elementConfig}
+                id={props.inputConfig.id}
                 className="form-control"
-                value={props.value}
+                value={props.inputConfig.value}
                 onChange={props.changed} />;
             break;
         case ( 'select' ):
             inputElement = (
                 <select
-                    id={props.id}
-                    value={props.value}
+                    id={props.inputConfig.id}
+                    value={props.inputConfig.value}
                     className="form-control"
                     onChange={props.changed}>
-                    {props.elementConfig.options.map(option => (
-                        <option key={option.value} value={props.elementConfig.name}>
+                    {props.inputConfig.elementConfig.options.map(option => (
+                        <option key={option.value} value={props.inputConfig.elementConfig.name}>
                             {option.displayValue}
                         </option>
                     ))}
@@ -46,14 +36,14 @@ const input = ( props ) => {
         case ( 'radio' ):
             inputElement = (
                 <div>
-                    {props.elementConfig.options.map((option, index) => {
-                        const checked = (props.value === option.value) ? 'checked' : '';
+                    {props.inputConfig.elementConfig.options.map((option, index) => {
+                        const checked = (props.inputConfig.value === option.value) ? 'checked' : '';
                         return (<div className='form-check text-left mb-3' key={index}>
                                     <input type="radio"
                                            key={option.value}
-                                           id={props.id}
+                                           id={props.inputConfig.id}
                                            className="form-check-input"
-                                           name={props.elementConfig.name}
+                                           name={props.inputConfig.elementConfig.name}
                                            value={option.value}
                                            onChange={props.changed}
                                            checked={checked}/>
@@ -63,15 +53,16 @@ const input = ( props ) => {
                 </div>
             );
             break;
+        case ('input'):
         default:
             inputElement = <input
-                {...props.elementConfig}
-                id={props.id}
+                {...props.inputConfig.elementConfig}
+                id={props.inputConfig.id}
                 className="form-control"
-                value={props.value}
-                onKeyPress={props.keypress}
-                onChange={props.changed}
-                onPaste={(e) => {e.preventDefault();}}
+                value={props.inputConfig.value}
+                onKeyPress={props.inputConfig.keypress}
+                onChange={props.inputConfig.changed}
+                onPaste={props.inputConfig.pasted}
                 autoComplete='off'/>;
             break;
     }
@@ -84,7 +75,7 @@ const input = ( props ) => {
         classError.push('mr-2');
     }
 
-    const label = (props.label) ? <label className={arrClassLabel.join(' ')} htmlFor={props.id}>{props.label}</label> : null;
+    const label = (props.inputConfig.label) ? <label className={arrClassLabel.join(' ')} htmlFor={props.inputConfig.id}>{props.inputConfig.label}</label> : null;
 
     return (
         <div className="form-group row">
@@ -93,11 +84,17 @@ const input = ( props ) => {
                 {inputElement}
             </div>
             <div className={classError.join(' ')}>
-                {props.error}
+                {props.inputConfig.error}
             </div>
         </div>
     );
-
 };
+
+input.propTypes = {
+    inputConfig: PropTypes.object.isRequired,
+    columnLabel: PropTypes.string.isRequired,
+    columnInput: PropTypes.string.isRequired,
+    changed: PropTypes.func.isRequired,
+}
 
 export default input;

@@ -34,7 +34,8 @@ const Configuration = props => {
             elementType: 'radio',
             elementConfig: {
                 options: sizes,
-                name: 'boardSize'
+                name: 'boardSize',
+                id: 'boardSize',
             },
             value: '26',
             validation: {
@@ -51,7 +52,8 @@ const Configuration = props => {
             elementType: 'radio',
             elementConfig: {
                 options: colors,
-                name: 'colorSnake'
+                name: 'colorSnake',
+                id: 'colorSnake',
             },
             value: styleTemplate.color.replace('color-', ''),
             validation: {
@@ -68,7 +70,8 @@ const Configuration = props => {
             elementType: 'radio',
             elementConfig: {
                 options: levelVelocities,
-                name: 'levelVelocity'
+                name: 'levelVelocity',
+                id: 'levelVelocity'
             },
             value: 'Medium',
             validation: {

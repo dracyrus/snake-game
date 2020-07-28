@@ -6,7 +6,6 @@ import {connect} from "react-redux";
 import {updateObject, useInterval, updateBoard, udpateSnakePosition} from "../../helpers/";
 
 import Board from "../../components/Board/Board";
-import BoardMessage from "../../components/Board/BoardMessage/BoardMessage";
 
 import './Game.css';
 

@@ -4,6 +4,7 @@ import {faAppleAlt} from "@fortawesome/free-solid-svg-icons";
 
 import './Score.css';
 import {connect} from "react-redux";
+import {PropTypes} from "prop-types";
 
 const Score = props => {
     const {styleTemplate} = props;
@@ -22,5 +23,11 @@ const mapStateToProps = state => {
         styleTemplate: state.config.styleTemplate,
     };
 };
+
+Score.propTypes = {
+    score: PropTypes.number.isRequired,
+    foodColor: PropTypes.string.isRequired,
+
+}
 
 export default connect(mapStateToProps)(Score);
