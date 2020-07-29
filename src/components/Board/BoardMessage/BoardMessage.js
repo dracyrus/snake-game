@@ -1,15 +1,13 @@
 import React from "react";
-
-import '../Board.css';
-import {connect} from "react-redux";
 import {PropTypes} from "prop-types";
 
-const BoardMessage = props => {
-    const {styleTemplate} = props;
+import '../Board.css';
 
-    const boardGameStyle = ['boardGame', styleTemplate.board[1]];
-    const boardGameMessageStyle = ['boardGameMessage', styleTemplate.board[1]];
-    const boardGameTextInstructionsStyle = ['boardGameTextInstruction', styleTemplate.board[1]];
+const boardMessage = props => {
+
+    const boardGameStyle = ['boardGame', props.styleTemplateBoard];
+    const boardGameMessageStyle = ['boardGameMessage', props.styleTemplateBoard];
+    const boardGameTextInstructionsStyle = ['boardGameTextInstruction', props.styleTemplateBoard];
 
     return (
         <div onClick={props.handleEvent} className='text-center'>
@@ -20,14 +18,10 @@ const BoardMessage = props => {
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        styleTemplate: state.config.styleTemplate,
-    };
-};
-
-BoardMessage.propTypes = {
+boardMessage.propTypes = {
+    styleTemplateBoard: PropTypes.string.isRequired,
+    message: PropTypes.string.isRequired,
     handleEvent: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps)(BoardMessage);
+export default boardMessage;

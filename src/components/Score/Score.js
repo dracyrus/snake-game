@@ -2,14 +2,12 @@ import React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAppleAlt} from "@fortawesome/free-solid-svg-icons";
 
-import './Score.css';
-import {connect} from "react-redux";
 import {PropTypes} from "prop-types";
 
-const Score = props => {
-    const {styleTemplate} = props;
+import './Score.css';
 
-    const scoreStyle = ['score-container', styleTemplate.board[1]]
+const score = props => {
+    const scoreStyle = ['score-container', props.styleTemplateBoardSize]
 
     return (
         <div className={scoreStyle.join(' ')}>
@@ -18,16 +16,10 @@ const Score = props => {
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        styleTemplate: state.config.styleTemplate,
-    };
-};
-
-Score.propTypes = {
+score.propTypes = {
     score: PropTypes.number.isRequired,
     foodColor: PropTypes.string.isRequired,
-
+    styleTemplateBoardSize: PropTypes.string.isRequired,
 }
 
-export default connect(mapStateToProps)(Score);
+export default score;

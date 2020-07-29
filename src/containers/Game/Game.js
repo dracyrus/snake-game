@@ -137,6 +137,7 @@ const Game = props => {
         <Row className='p-5 m-0 w-100'>
             <Col lg={12} className="text-center">
                 <Board
+                    styleTemplate={props.styleTemplate}
                     boardSquare={board.boardSquare}
                     snake={snake}
                     game={game}
@@ -149,6 +150,7 @@ const Game = props => {
 
 const mapStateToProps = state => {
     return {
+        styleTemplate: state.config.styleTemplate,
         boardSize: state.config.boardSize,
         levelVelocity: state.config.levelVelocity,
     };

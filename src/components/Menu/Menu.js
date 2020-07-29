@@ -1,20 +1,18 @@
 import React from "react";
-import {connect} from "react-redux";
+import {PropTypes} from "prop-types";
 import {Navbar} from "react-bootstrap";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCog, faArrowAltCircleLeft} from "@fortawesome/free-solid-svg-icons";
 
 import './Menu.css';
 
-const Menu = props => {
-    let location = useLocation();
-    const {styleTemplate} = props;
 
+const menu = props => {
     let menuIcon = <FontAwesomeIcon icon={faCog}/>;
     let menuUrl  = '/configuration';
 
-    if(location.pathname === '/configuration'){
+    if(props.pathname === '/configuration'){
         menuIcon = <FontAwesomeIcon icon={faArrowAltCircleLeft}/>;
         menuUrl  = '/';
     }
@@ -23,17 +21,17 @@ const Menu = props => {
         <Navbar>
             <Navbar.Collapse className="justify-content-end">
                 <Navbar.Text>
-                    <Link to={menuUrl} className={styleTemplate.color}>{menuIcon}</Link>
+                    <Link to={menuUrl} className={props.color}>{menuIcon}</Link>
                 </Navbar.Text>
             </Navbar.Collapse>
         </Navbar>
     );
 }
 
-const mapStateToProps = state => {
-    return {
-        styleTemplate: state.config.styleTemplate,
-    };
-};
+menu.propTypes = {
+    color: PropTypes.string.isRequired,
+    pathname: PropTypes.string.isRequired,
+}
 
-export default connect(mapStateToProps)(Menu);
+
+export default menu;
